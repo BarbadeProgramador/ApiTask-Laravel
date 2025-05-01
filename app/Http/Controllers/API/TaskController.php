@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\User;
 use App\Http\Requests\StoreTaskRequest;
 
 class TaskController extends Controller
@@ -12,11 +13,15 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $tasks = Task::all();
+        $tasks = Task::where('user_id', $request->user()->id)->get(); // 🔹 Solo obtiene las tareas del usuario autenticado
+        return response()->json(['tasks' => $tasks], 200);
 
-        return response()->json(['task' => $tasks]);
+        
+
+        // return response()->json(['task' => $tasks]);
     }
 
     /**
@@ -24,7 +29,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $data = $request->validated(); // Solo obtiene los datos validados
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id; // 🔹 Asigna el ID del usuario actual
+
         $task = Task::create($data);
 
         return response()->json([

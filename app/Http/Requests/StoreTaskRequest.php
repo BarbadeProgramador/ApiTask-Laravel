@@ -23,7 +23,8 @@ class StoreTaskRequest extends FormRequest
     {
 
         return [
-            'title' => 'required|max:100', 
+            'title' => 'required|max:100',
+            'description' => 'required' ,
             'state' => 'required|in:Activo,Finalizado,En proceso', 
         ];
     }
