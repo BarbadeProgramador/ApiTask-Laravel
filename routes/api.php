@@ -17,7 +17,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::prefix('tasks')->group(function () {
     Route::get('/', [TaskController::class, 'index'])->middleware('auth:sanctum'); // Obtener todas las tareas
     Route::post('/', [TaskController::class, 'store'])->middleware('auth:sanctum');// Crear una nueva tarea
-    Route::get('{id}', [TaskController::class, 'show'])->middleware('auth:sanctum'); // Obtener una tarea específica
     Route::put('{id}', [TaskController::class, 'update'])->middleware('auth:sanctum'); // Actualizar una tarea
     Route::delete('{id}', [TaskController::class, 'destroy'])->middleware('auth:sanctum'); // Eliminar una tarea
 });

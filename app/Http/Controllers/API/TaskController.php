@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\User;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TaskController extends Controller
 {
+
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -43,24 +47,38 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateTaskRequest $request,  $id)
     {
-        //
+        $validatedData = $request->validated(); 
+        $task = Task::findOrFail($id); 
+        $this->authorize('update', $task); // Autoriza la acción
+        $task->update($validatedData); 
+
+
+
+        return response()->json([
+            'message' => 'Tarea actualizada exitosamente',
+            'task' => $task 
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $task = Task::findOrFail($id); 
+
+        $this->authorize('delete', $task);
+        $task->delete();
+        return response()->json([
+            'message' => 'Tarea eliminada'
+        ], 200);
+
     }
 }

@@ -23,7 +23,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
     
-        $user->tokens()->delete(); // 🔹 Borra tokens anteriores para que solo tenga uno activo
+        $user->tokens()->delete();
         $token = $user->createToken('auth_token')->plainTextToken;
     
         return response()->json([
