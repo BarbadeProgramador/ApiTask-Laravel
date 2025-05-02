@@ -27,4 +27,14 @@ class UpdateTaskRequest extends FormRequest
             'state' => 'required|in:Activo,Finalizado,En proceso', 
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'El título es obligatorio.',
+            'title.max' => 'El título no puede tener más de 100 caracteres.',
+            'state.required' => 'El estado es obligatorio.',
+            'state.in' => 'El estado debe ser Activo, Finalizado o En proceso.',
+        ];
+    }
 }

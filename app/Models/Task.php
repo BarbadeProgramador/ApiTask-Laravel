@@ -25,8 +25,9 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeState(){
-        return "hola";
+    public function scopeFilterByState($query, $state)
+    {
+        return $query->where('state', $state);
     }
 
 

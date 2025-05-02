@@ -14,27 +14,20 @@ class TaskController extends Controller
 {
 
     use AuthorizesRequests;
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $tasks = Task::all();
-        $tasks = Task::where('user_id', $request->user()->id)->get(); // 🔹 Solo obtiene las tareas del usuario autenticado
+        $tasks = Task::where('user_id', $request->user()->id)->get();
         return response()->json(['tasks' => $tasks], 200);
 
-        
-
-        // return response()->json(['task' => $tasks]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreTaskRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = $request->user()->id; // 🔹 Asigna el ID del usuario actual
+        $data['user_id'] = $request->user()->id; 
 
         $task = Task::create($data);
 
@@ -44,13 +37,7 @@ class TaskController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
-    {
-        //
-    }
+
 
     public function update(UpdateTaskRequest $request,  $id)
     {
@@ -67,9 +54,6 @@ class TaskController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request, $id)
     {
         $task = Task::findOrFail($id); 
@@ -77,7 +61,7 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
         $task->delete();
         return response()->json([
-            'message' => 'Tarea eliminada'
+            'message' => 'Tarea eliminada exitosamente'
         ], 200);
 
     }
