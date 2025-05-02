@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -33,8 +35,16 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title.required' => 'El título es obligatorio.',
             'title.max' => 'El título no puede tener más de 100 caracteres.',
+            'description.required' => 'La descripción es obligatoria.',
             'state.required' => 'El estado es obligatorio.',
-            'state.in' => 'El estado debe ser Activo, Finalizado o En proceso.',
+            'state.in' => 'El estado debe ser uno de los siguientes: Activo, Finalizado o En proceso.',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors()
+        ], 422));
     }
 }
