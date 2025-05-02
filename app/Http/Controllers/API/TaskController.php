@@ -43,7 +43,7 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated(); 
         $task = Task::findOrFail($id); 
-        $this->authorize('update', $task); // Autoriza la acción
+        $this->authorize('update', $task); 
         $task->update($validatedData); 
 
 
